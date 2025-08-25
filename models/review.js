@@ -9,7 +9,7 @@ const reviewSchema= new Schema({
     },
     createdAt:{
         type:Date,
-        default:Date.now()
+        default:Date.now // Corrected: Date.now without parentheses for default value
     },
     author:{
         type:Schema.Types.ObjectId,

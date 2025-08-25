@@ -111,3 +111,11 @@ text-decoration: none;
   background-color: #f0f0f0;
   border-radius: 10px;
 }
+
+
+/* Map */
+#map{
+    width: 80vh;
+    height: 400px;
+   
+}

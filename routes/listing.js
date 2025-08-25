@@ -4,10 +4,9 @@ const Listing = require('../models/listing');
 const wrapAsync = require('../utils/wrapAsync.js');
 const { isLoggedIn, isOwner,validateListing } = require('../middleware.js');
 const listingController =require("../controllers/listings.js");
-// const { li } = require('framer-motion/client');
- const multer = require('multer');
- const {storage, cloudinary} = require('../cloudConfig.js'); // Import the cloudinary configuration
- const upload = multer({ storage }); // Set the destination for uploaded files
+const multer = require('multer');
+const {storage} = require('../cloudConfig.js'); 
+const upload = multer({ storage }); 
 
 
 router.route("/")
@@ -15,12 +14,12 @@ router.route("/")
 .get(wrapAsync(listingController.index))
 //Create Route--
 .post(isLoggedIn,
-    upload.single("listing[image]"),
+    upload.single("listing[image]"), // Correctly uses req.file
     validateListing,
-    wrapAsync(listingController.createListing))
+    wrapAsync(listingController.createListing));
 
 //New Route--
-router.get("/new",isLoggedIn,listingController.renderNewForm)
+router.get("/new",isLoggedIn,listingController.renderNewForm);
 
 router.route("/:id")
 //Show Route--
@@ -28,12 +27,9 @@ router.route("/:id")
 //Update Route--
 .put(isLoggedIn,isOwner,upload.single("listing[image]"),validateListing,wrapAsync(listingController.updateListing))
 //Delete Route--
-.delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing)) 
-
-
+.delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing)); 
 
 //Edit Route--
-router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEditForm))
-
+router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEditForm));
 
 module.exports = router;

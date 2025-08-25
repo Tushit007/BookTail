@@ -4,13 +4,18 @@ const ExpressError = require("./utils/ExpressError");
 const { listingSchema,reviewSchema } = require("./schema");
 
 module.exports.isLoggedIn = (req, res, next) => {
+    console.log("--- isLoggedIn Middleware ---");
+    console.log("req.isAuthenticated():", req.isAuthenticated());
+    console.log("req.user:", req.user ? req.user.username : "No user in req.user"); // Log username if available
     if (!req.isAuthenticated()) {
-        req.session.redirectUrl = req.originalUrl; // Store the original URL
+        console.log("User NOT authenticated. Redirecting to login.");
+        req.session.redirectUrl = req.originalUrl;
         req.flash("error", "You must be signed in to do that!");
         return res.redirect("/login");
     }
+    console.log("User IS authenticated. Proceeding to next middleware.");
     next();
-}
+};
 
 module.exports.saveRedirectUrl = (req, res, next) => {
     if(req.session.redirectUrl) {
